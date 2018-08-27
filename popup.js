@@ -62,8 +62,9 @@ a： MouseEvent {isTrusted: true, screenX: 1648, screenY: 92, clientX: 494, clie
 		
 	}
 }
-function bgJs(){ 
-	chrome.extension.sendMessage({eval: input.value},function(response){
+function bgJs(code){
+	if(!code)code=input.value
+	chrome.extension.sendMessage({eval: code},function(response){
 			output.append(response)
 		}  
 	)
@@ -174,7 +175,15 @@ document.getElementById('taobao_pause').addEventListener('click',function(){taob
 document.getElementById ('taobao_item').addEventListener('click',function(){taobao('item')})
  
 document.getElementById('get').addEventListener('click', function(){
-	txt="N.http(gurl+window.location.host+'.js','get',function(){ eval(this.response)  }      )"
+		bgJs("\
+	chrome.tabs.query({url:'https://ide.coding.net/ws/*'},function(tabs){\
+		for(tab of tabs){\
+			chrome.tabs.executeScript(tab.id,{code:'if(p=document.querySelector(\".port-content > a\") )chrome.storage.sync.set({\"cjs_post_url\":p.href}) ; else{alert(\"NO url in \"+document.URL)}  ' })  \
+		}\
+	})\
+		")
+	
+	txt="N.http(gurl+'site/'+window.location.host+'.js','get',function(){ eval(this.response)  }      )"
 	
 	chrome.tabs.sendMessage(currentTab.id, {
 		type: 'eval',
