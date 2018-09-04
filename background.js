@@ -231,7 +231,7 @@ cm=chrome.contextMenus.create( {
 		}
 		
 		if(a.selectionText){
-			return chrome.tabs.create({url:'https://www.google.com.my/search?q='+a.selectionText})
+			return chrome.tabs.create({url:'https://www.zhihu.com/search?q='+a.selectionText})
 		}
 		for(i in gcmUrl){//(i of  x)VM91:1 Uncaught TypeError: gcmUrl is not iterable
 			if(tab.url.includes(i)){return gcmUrl[i](a,tab)}
